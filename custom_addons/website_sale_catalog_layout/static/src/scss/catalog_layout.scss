@@ -1,0 +1,257 @@
+/* Keep Odoo's selected list layout, but let the content set a compact row height. */
+#products_grid #o_wsale_products_grid.o_wsale_products_opt_layout_list.o_wsale_products_opt_design_cards {
+    .oe_product {
+        .oe_product_cart {
+            min-height: 160px;
+        }
+
+        .oe_product_image {
+            flex: 0 0 160px;
+            width: 160px;
+            height: 160px;
+            min-height: 0;
+            aspect-ratio: auto;
+            padding: 0.5rem;
+        }
+
+        .oe_product_image_link,
+        .oe_product_image_img_wrapper,
+        .oe_product_image_img_wrapper_secondary {
+            height: 100%;
+            min-height: 0;
+        }
+
+        .o_wsale_product_information {
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .o_wsale_product_btn {
+            align-self: start;
+            margin-bottom: 0;
+        }
+    }
+}
+
+/* Balance the filter rail with an equal gutter on the right. This centers the
+   catalog content beneath the page-centered desktop logo. */
+@media (min-width: 992px) {
+    #o_wsale_container.o_wsale_page_contained.o_wsale_has_sidebar {
+        .o_wsale_products_main_row {
+            --catalog-sidebar-width: 220px;
+            padding-right: var(--catalog-sidebar-width);
+        }
+
+        #products_grid_before {
+            flex: 0 0 var(--catalog-sidebar-width);
+            width: var(--catalog-sidebar-width);
+            max-width: var(--catalog-sidebar-width);
+            min-width: 0;
+        }
+
+        #products_grid {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+    }
+}
+
+@media (max-width: 575.98px) {
+    #products_grid #o_wsale_products_grid.o_wsale_products_opt_layout_list.o_wsale_products_opt_design_cards {
+        .oe_product {
+            .oe_product_cart {
+                min-height: 0;
+                height: auto !important;
+                display: grid !important;
+                grid-template-columns: minmax(0, #{unquote("min(220px, calc((100% - 8px) * 0.52), calc(100% - 136px))")}) minmax(128px, 1fr);
+                gap: 8px;
+                padding: 6px;
+                align-items: start;
+            }
+
+            .oe_product_image {
+                min-width: 0;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1.1;
+                align-self: center;
+                padding: 0;
+            }
+
+            .oe_product_image_link,
+            .oe_product_image_img_wrapper,
+            .oe_product_image_img_wrapper_secondary {
+                width: 100%;
+                height: 100%;
+                min-height: 0;
+                padding: 0;
+            }
+
+            .oe_product_image_link_has_secondary {
+                padding-bottom: 20px !important;
+            }
+
+            .oe_product_image_link .oe_product_image_img,
+            .oe_product_image_link .oe_product_image_img_secondary {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: 100% !important;
+                max-height: 100% !important;
+                object-fit: contain !important;
+            }
+
+            .o_wsale_product_information {
+                min-width: 0;
+                padding: 0;
+                justify-content: flex-start;
+                gap: 6px;
+            }
+
+            .o_wsale_products_item_title {
+                white-space: normal;
+                overflow: visible;
+                display: block;
+                -webkit-line-clamp: unset;
+            }
+
+            .o_wsale_product_sub {
+                display: flex;
+                flex-direction: column;
+                flex: none;
+                align-items: stretch;
+                justify-content: flex-start !important;
+                gap: 6px !important;
+            }
+
+            .o_wsale_product_btn {
+                align-self: flex-end;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                max-width: 100%;
+                margin-top: 0;
+                gap: 4px;
+            }
+
+            .o_add_wishlist {
+                min-width: 44px;
+                min-height: 44px;
+                order: -3;
+                margin-left: auto;
+            }
+            .o_wsale_product_action_row {
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .o_wsale_product_btn_primary {
+                min-height: 44px;
+                max-width: 100%;
+                white-space: normal;
+            }
+        }
+    }
+}
+
+/* A website-specific copy can keep Odoo's floating view active. The header
+   controls above replace it, so avoid rendering a second toolbar over cards. */
+#o_wsale_container #o_wsale_floating_bar_rail {
+    display: none !important;
+}
+
+#o_wsale_container #o_wsale_pager.o_wsale_pager_accommodate_floating {
+    padding-bottom: 0 !important;
+}
+
+@media (max-width: 575.98px) {
+    #products_grid .products_header {
+        flex-wrap: wrap !important;
+
+        .o_wsale_products_header_search_form_container {
+            display: block !important;
+            flex: 1 0 100%;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        a[data-bs-target="#o_wsale_search_modal"] {
+            display: none !important;
+        }
+
+        .o_sortby_dropdown {
+            flex: 1;
+        }
+    }
+
+    /* The catalog toolbar is hidden, so the WhatsApp button can use its
+       normal corner position instead of reserving space for that toolbar. */
+    .o_wsale_products_page .o_whatsapp_float {
+        bottom: 14px !important;
+    }
+}
+
+@media (max-width: 419.98px) {
+    #products_grid #o_wsale_products_grid.o_wsale_products_opt_layout_list.o_wsale_products_opt_design_cards {
+        .oe_product {
+            .o_wsale_product_btn {
+                flex-wrap: wrap;
+                white-space: normal;
+                gap: 4px;
+                max-width: 100%;
+            }
+
+            .o_wsale_product_btn_primary {
+                max-width: 100%;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}
+
+/* Keep sale information distinct while preserving Odoo's own price logic. */
+.o_vlizama_sale_price.o_vlizama_discounted {
+    color: #b42332;
+    font-weight: 700;
+}
+
+.o_vlizama_discount_badge:not(.d-none) {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: #f3e8ff;
+    color: #7a3294;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.oe_product .product_price .o_vlizama_sale_price ~ del,
+#product_detail [name='product_price_container'] .oe_default_price,
+#product_detail [name='product_price_container'] .oe_compare_list_price {
+    color: #6b7280 !important;
+}
+
+@media (max-width: 575.98px) {
+    .oe_product .product_price:has(.o_vlizama_discounted) {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+        justify-content: start;
+        column-gap: 0.4rem;
+
+        .o_vlizama_discount_badge {
+            margin-left: 0;
+        }
+
+        del {
+            grid-column: 1 / -1;
+            margin: 0.2rem 0 0 !important;
+        }
+    }
+}

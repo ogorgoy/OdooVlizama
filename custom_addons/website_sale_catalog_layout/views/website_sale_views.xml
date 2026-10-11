@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="catalog_header_controls" inherit_id="website_sale.products" priority="99">
+        <xpath expr="//t[@t-set='opt_wsale_floating_bar']" position="attributes">
+            <attribute name="t-value">False</attribute>
+        </xpath>
+    </template>
+</odoo>

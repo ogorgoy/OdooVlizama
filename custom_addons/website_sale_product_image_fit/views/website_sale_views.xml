@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--
+        Activate Odoo's built-in mobile shop layout:
+        website_sale.products_mobile_cols_single
+        This switches mobile from 2 products per row to 1 product per row.
+    -->
+    <record id="website_sale.products_mobile_cols_single" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

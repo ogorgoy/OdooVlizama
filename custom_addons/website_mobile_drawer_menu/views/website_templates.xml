@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template
+        id="website_mobile_drawer_menu_styles"
+        inherit_id="website.layout"
+        name="Website Mobile Drawer Menu Styles"
+    >
+        <xpath expr="//head" position="inside">
+       <style id="website_mobile_drawer_menu_styles">
+    @media (max-width: 991.98px) {
+        #top_menu_collapse_mobile,
+        #top_menu_collapse_mobile.offcanvas,
+        #top_menu_collapse_mobile.o_navbar_mobile {
+            --bs-offcanvas-bg: #ffffff;
+            --bs-offcanvas-color: var(--bs-body-color, #212529);
+            --bs-offcanvas-border-color: var(--bs-border-color, #dee2e6);
+            --bs-offcanvas-width: min(88vw, 360px);
+
+            width: min(88vw, 360px) !important;
+            max-width: 360px !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: var(--bs-body-color, #212529) !important;
+            border-right: 1px solid var(--bs-border-color, #dee2e6) !important;
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.10) !important;
+            opacity: 1 !important;
+            z-index: 1055 !important;
+        }
+
+        #top_menu_collapse_mobile .offcanvas-header,
+        #top_menu_collapse_mobile .offcanvas-body,
+        #top_menu_collapse_mobile .o_mobile_icon_menu,
+        #top_menu_collapse_mobile .o_mobile_account_block {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            opacity: 1 !important;
+        }
+
+        #top_menu_collapse_mobile .offcanvas-header {
+            justify-content: flex-end !important;
+            padding: 1rem 1rem 0.5rem !important;
+            border-bottom: 1px solid var(--bs-border-color, #dee2e6) !important;
+        }
+
+        #top_menu_collapse_mobile .btn-close {
+            opacity: 0.85 !important;
+        }
+
+    #top_menu_collapse_mobile .offcanvas-body {
+    display: block !important;
+    min-height: auto !important;
+    padding: 0.5rem 0.75rem 1rem !important;
+}
+
+        #top_menu_collapse_mobile .o_mobile_icon_menu {
+            list-style: none !important;
+            margin: 0 !important;
+            padding: 0.25rem 0 0 !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_icon_menu .nav-item,
+        #top_menu_collapse_mobile .o_mobile_account_block > li,
+        #top_menu_collapse_mobile .o_mobile_account_block .dropdown {
+            list-style: none !important;
+            border: 0 !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_menu_spacer {
+            list-style: none !important;
+            height: 0.35rem !important;
+            border: 0 !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_icon_link {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.85rem !important;
+            padding: 0.8rem 0.9rem !important;
+            margin: 0.1rem 0 !important;
+            border-radius: 0.9rem !important;
+            color: var(--bs-body-color, #212529) !important;
+            text-decoration: none !important;
+            font-size: 1.02rem !important;
+            font-weight: 500 !important;
+            line-height: 1.35 !important;
+            background: transparent !important;
+            border: 0 !important;
+            transition: background-color 0.2s ease, color 0.2s ease !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_icon_link:hover,
+        #top_menu_collapse_mobile .o_mobile_icon_link:focus,
+        #top_menu_collapse_mobile .o_mobile_icon_link.active {
+            color: var(--bs-body-color, #212529) !important;
+            background: var(--bs-secondary-bg, #f8f9fa) !important;
+            text-decoration: none !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_menu_icon {
+            width: 20px !important;
+            min-width: 20px !important;
+            height: 20px !important;
+            text-align: center !important;
+            color: var(--bs-primary, #6f42c1) !important;
+            font-size: 0.95rem !important;
+            line-height: 20px !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_menu_img_icon {
+            width: 20px !important;
+            min-width: 20px !important;
+            height: 20px !important;
+            display: inline-block !important;
+            object-fit: contain !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_icon_link span {
+            color: inherit !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_account_block {
+            margin-top: auto !important;
+            padding: 0.85rem 0 0 !important;
+            border-top: 1px solid var(--bs-border-color, #dee2e6) !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_account_block .nav-link,
+        #top_menu_collapse_mobile .o_mobile_account_block .dropdown-toggle {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.6rem !important;
+            padding: 0.75rem 0.9rem !important;
+            border-radius: 0.9rem !important;
+            color: var(--bs-body-color, #212529) !important;
+            font-size: 0.95rem !important;
+            text-decoration: none !important;
+            background: transparent !important;
+            border: 0 !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_account_block .nav-link:hover,
+        #top_menu_collapse_mobile .o_mobile_account_block .dropdown-toggle:hover,
+        #top_menu_collapse_mobile .o_mobile_account_block .nav-link:focus,
+        #top_menu_collapse_mobile .o_mobile_account_block .dropdown-toggle:focus {
+            background: var(--bs-secondary-bg, #f8f9fa) !important;
+            color: var(--bs-body-color, #212529) !important;
+        }
+
+        #top_menu_collapse_mobile .o_mobile_account_block .dropdown-menu {
+            width: 100% !important;
+            margin-top: 0.35rem !important;
+            border: 1px solid var(--bs-border-color, #dee2e6) !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+            background: #ffffff !important;
+            color: var(--bs-body-color, #212529) !important;
+        }
+
+        #top_menu_collapse_mobile .dropdown-item {
+            padding: 0.7rem 0.9rem !important;
+            border-radius: 0.75rem !important;
+            color: var(--bs-body-color, #212529) !important;
+            background: transparent !important;
+        }
+
+        #top_menu_collapse_mobile .dropdown-item:active,
+        #top_menu_collapse_mobile .dropdown-item:hover {
+            background: var(--bs-secondary-bg, #f8f9fa) !important;
+            color: var(--bs-body-color, #212529) !important;
+        }
+    }
+</style>
+        </xpath>
+    </template>
+
+    <template
+        id="template_header_mobile_drawer_menu"
+        inherit_id="website.template_header_mobile"
+        name="Website Mobile Drawer Menu"
+    >
+        <xpath expr="//div[@id='top_menu_collapse_mobile']" position="attributes">
+            <attribute name="class" add="offcanvas-start" remove="offcanvas-end" separator=" "/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.placeholder_header_search_box']" position="replace">
+            <t/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.placeholder_header_text_element']" position="replace">
+            <t/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.placeholder_header_social_links']" position="replace">
+            <t/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="before">
+            <t t-set="icon_map" t-value="{
+                'home': 'fa-home',
+                'sobre nosotros': 'fa-eye',
+                'about us': 'fa-eye',
+                'about': 'fa-eye',
+
+                'contactenos': 'fa-envelope-o',
+                'contáctenos': 'fa-envelope-o',
+                'contact us': 'fa-envelope-o',
+                'contact': 'fa-envelope-o',
+
+                'clientes': 'fa-star-o',
+                'clients': 'fa-star-o',
+
+                'productos': 'fa-tag',
+                'products': 'fa-tag',
+                'shop': 'fa-tag',
+                'tienda': 'fa-tag',
+
+                'tu carrito': 'fa-shopping-cart',
+                'carrito': 'fa-shopping-cart',
+                'cart': 'fa-shopping-cart',
+
+                'tus favoritos': 'fa-heart',
+                'favoritos': 'fa-heart',
+                'wishlist': 'fa-heart',
+
+                'carteras': 'fa-shopping-bag',
+                'handbags': 'fa-shopping-bag',
+                'bags': 'fa-shopping-bag'
+            }"/>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.navbar_nav']/t[@t-foreach='website.menu_id.child_id']" position="replace">
+            <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                <t t-if="submenu.is_visible">
+                    <t t-set="menu_key" t-value="(submenu.name or '').strip().lower()"/>
+
+                    <li
+                        t-if="menu_key in ['productos', 'products', 'shop', 'tienda', 'carteras', 'handbags', 'bags']"
+                        class="o_mobile_menu_spacer"
+                        role="presentation"
+                    />
+
+                    <li class="nav-item o_mobile_icon_item" role="presentation">
+                        <a
+                            t-att-href="submenu.url"
+                            t-att-target="'_blank' if submenu.new_window else None"
+                            class="nav-link o_mobile_icon_link text-wrap"
+                            role="menuitem"
+                            t-ignore="true"
+                        >
+                            <t t-if="menu_key == 'ropa'">
+                                <img
+                                    src="/website_mobile_drawer_menu/static/src/img/icon_top.svg"
+                                    class="o_mobile_menu_img_icon"
+                                    alt="Ropa"
+                                />
+                            </t>
+                            <t t-elif="menu_key == 'perfumes'">
+                                <img
+                                    src="/website_mobile_drawer_menu/static/src/img/icon_perfume.svg"
+                                    class="o_mobile_menu_img_icon"
+                                    alt="Perfumes"
+                                />
+                            </t>
+                            <t t-else="">
+                                <i
+                                    t-att-class="'fa %s o_mobile_menu_icon' % icon_map.get(menu_key, 'fa-angle-right')"
+                                    aria-hidden="true"
+                                />
+                            </t>
+                            <span t-field="submenu.name"/>
+                        </a>
+                    </li>
+                </t>
+            </t>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="attributes">
+            <attribute name="_nav_class.f">o_mobile_icon_menu</attribute>
+        </xpath>
+
+        <xpath expr="//ul[hasclass('navbar-nav') and hasclass('gap-2') and hasclass('mt-3') and hasclass('w-100')]" position="replace">
+            <ul class="navbar-nav gap-2 mt-3 w-100 o_mobile_account_block">
+                <t t-call="portal.placeholder_user_sign_in"
+                   _link_class.f="nav-link o_nav_link_btn w-100 border text-center"/>
+
+                <t t-call="portal.user_dropdown"
+                   _icon="true"
+                   _user_name="true"
+                   _user_name_class.f="me-auto small"
+                   _link_class.f="nav-link d-flex align-items-center border-0"
+                   _icon_class.f="me-2"
+                   _item_class.f="dropdown dropup"
+                   _dropdown_menu_class.f="w-100"/>
+            </ul>
+        </xpath>
+    </template>
+</odoo>

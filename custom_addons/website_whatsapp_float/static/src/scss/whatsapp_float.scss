@@ -1,0 +1,67 @@
+.o_whatsapp_float {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    z-index: 1050;
+
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #25d366;
+    color: #fff;
+    text-decoration: none;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+
+    &:hover {
+        color: #fff;
+        filter: brightness(0.97);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+    }
+
+    &:focus-visible {
+        outline: 3px solid rgba(37, 211, 102, 0.35);
+        outline-offset: 4px;
+    }
+
+    i.fa {
+        font-size: 34px;
+        line-height: 1;
+    }
+}
+
+@media (max-width: 576px) {
+    .o_whatsapp_float {
+        right: 14px;
+        bottom: 14px;
+        width: 56px;
+        height: 56px;
+
+        i.fa {
+            font-size: 28px;
+        }
+    }
+
+    // On mobile shop pages, the website_sale floating bar can overlap the button.
+    // Apply an initial lift via CSS to avoid a visible "jump" before JS runs.
+    .o_whatsapp_float[data-wa-page="shop"] {
+        bottom: 86px;
+    }
+
+    .o_whatsapp_float.o_whatsapp_float--lifted {
+        bottom: 86px;
+    }
+}
+

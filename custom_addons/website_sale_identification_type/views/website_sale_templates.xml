@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template
+        id="address_form_fields_peru_lock"
+        inherit_id="website_sale.address_form_fields"
+        name="Website Sale Address Form Peru Lock"
+        priority="90"
+    >
+        <!-- Lock country to Peru -->
+        <xpath expr="//select[@name='country_id']" position="replace">
+            <select
+                id="o_country_id"
+                name="country_id"
+                class="form-select"
+            >
+                <option
+                    t-if="country"
+                    t-att-value="country.id"
+                    t-att-code="country.code"
+                    selected="selected"
+                    t-out="country.name"
+                />
+            </select>
+        </xpath>
+
+        <!-- Restrict identification types -->
+        <xpath expr="//select[@name='l10n_latam_identification_type_id']" position="replace">
+            <t
+                t-set="selected_identification_type_id"
+                t-value="partner_sudo.l10n_latam_identification_type_id.id or current_partner.l10n_latam_identification_type_id.id"
+            />
+            <select
+                id="o_l10n_latam_identification_type_id"
+                name="l10n_latam_identification_type_id"
+                class="form-select"
+            >
+                <option value="">Select...</option>
+                <option
+                    t-foreach="pe_checkout_identification_types"
+                    t-as="identification_type"
+                    t-att-value="identification_type.id"
+                    t-att-selected="identification_type.id == selected_identification_type_id"
+                    t-out="identification_type.name"
+                />
+            </select>
+        </xpath>
+    </template>
+</odoo>

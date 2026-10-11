@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_whatsapp_float_home" inherit_id="website.homepage" name="WhatsApp float (home)">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <a
+                class="o_whatsapp_float"
+                data-wa-page="home"
+                data-wa-phone="51993296194"
+                data-wa-msg-default="Hola, vi sus productos en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-category="Hola, vi su(s) {category} en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-product="Hola, estoy interesado/a en {product}. {url} ¿me pueden ayudar?"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                aria-label="WhatsApp"
+                title="WhatsApp"
+            >
+                <i class="fa fa-whatsapp" role="presentation"/>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="website_whatsapp_float_shop" inherit_id="website_sale.products" name="WhatsApp float (shop)">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <a
+                class="o_whatsapp_float"
+                data-wa-page="shop"
+                data-wa-phone="51993296194"
+                data-wa-msg-default="Hola, vi sus productos en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-category="Hola, vi su(s) {category} en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-product="Hola, estoy interesado/a en {product}. {url} ¿me pueden ayudar?"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                aria-label="WhatsApp"
+                title="WhatsApp"
+            >
+                <i class="fa fa-whatsapp" role="presentation"/>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="website_whatsapp_float_product" inherit_id="website_sale.product" name="WhatsApp float (product)">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <a
+                class="o_whatsapp_float"
+                data-wa-page="product"
+                data-wa-phone="51993296194"
+                data-wa-msg-default="Hola, vi sus productos en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-category="Hola, vi su(s) {category} en la web y estoy interesado/a, ¿me pueden ayudar?"
+                data-wa-msg-product="Hola, estoy interesado/a en {product}. {url} ¿me pueden ayudar?"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                aria-label="WhatsApp"
+                title="WhatsApp"
+            >
+                <i class="fa fa-whatsapp" role="presentation"/>
+            </a>
+        </xpath>
+    </template>
+</odoo>
+

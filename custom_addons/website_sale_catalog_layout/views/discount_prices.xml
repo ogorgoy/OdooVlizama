@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="catalog_discount_price" inherit_id="website_sale.products_item" priority="110">
+        <xpath expr="//div[hasclass('product_price')]/span[hasclass('fw-bold')]" position="before">
+            <t t-set="vlizama_reference_price" t-value="website.currency_id.round(template_price_vals.get('base_price') or 0)"/>
+            <t t-set="vlizama_has_discount" t-value="vlizama_reference_price and vlizama_reference_price &gt; website.currency_id.round(template_price_vals['price_reduce']) and (website.currency_id.round(template_price_vals['price_reduce']) or not website.prevent_zero_price_sale)"/>
+            <t t-set="vlizama_discount_percent" t-value="int(100 * (vlizama_reference_price - website.currency_id.round(template_price_vals['price_reduce'])) / vlizama_reference_price) if vlizama_has_discount else 0"/>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]/span[hasclass('fw-bold')]" position="attributes">
+            <attribute name="t-attf-class">mb-0 fw-bold o_vlizama_sale_price {{'o_vlizama_discounted' if vlizama_has_discount else ''}}</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]/span[hasclass('fw-bold')]" position="after">
+            <span t-if="vlizama_discount_percent &gt;= 1" class="o_vlizama_discount_badge" t-out="'−' + str(vlizama_discount_percent) + '%'" t-att-aria-label="str(vlizama_discount_percent) + '% de descuento'"/>
+        </xpath>
+    </template>
+
+    <template id="product_discount_price" inherit_id="website_sale.product_price" priority="110">
+        <xpath expr="//div[@name='product_price_container']/span[hasclass('oe_price')]" position="before">
+            <t t-set="vlizama_reference_price" t-value="website.currency_id.round((combination_info['list_price'] if combination_info['has_discounted_price'] else combination_info.get('compare_list_price')) or 0)"/>
+            <t t-set="vlizama_has_discount" t-value="vlizama_reference_price and vlizama_reference_price &gt; website.currency_id.round(combination_info['price']) and not combination_info['prevent_zero_price_sale']"/>
+            <t t-set="vlizama_discount_percent" t-value="int(100 * (vlizama_reference_price - website.currency_id.round(combination_info['price'])) / vlizama_reference_price) if vlizama_has_discount else 0"/>
+        </xpath>
+        <xpath expr="//div[@name='product_price_container']/span[hasclass('oe_price')]" position="attributes">
+            <attribute name="t-attf-class">oe_price o_vlizama_sale_price {{'o_vlizama_discounted' if vlizama_has_discount else ''}}</attribute>
+        </xpath>
+        <xpath expr="//div[@name='product_price_container']/span[hasclass('oe_price')]" position="after">
+            <span t-attf-class="o_vlizama_discount_badge {{'' if vlizama_discount_percent &gt;= 1 else 'd-none'}}" t-out="'−' + str(vlizama_discount_percent) + '%' if vlizama_discount_percent &gt;= 1 else ''" t-att-aria-label="str(vlizama_discount_percent) + '% de descuento' if vlizama_discount_percent &gt;= 1 else ''"/>
+        </xpath>
+    </template>
+</odoo>

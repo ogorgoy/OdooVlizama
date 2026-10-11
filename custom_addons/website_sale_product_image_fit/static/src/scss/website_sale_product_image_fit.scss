@@ -1,0 +1,209 @@
+/* =========================================================
+   SHOP / CATEGORY GRID
+   Fix the real shop-card image scroller structure
+   ========================================================= */
+
+#products_grid {
+    #o_wsale_products_grid {
+        .oe_product {
+            --o-wsale-card-thumb-aspect-ratio: 1;
+
+            /* Fallback for products with only one image */
+            .oe_product_image {
+                aspect-ratio: 1 / 1;
+                min-height: 180px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                padding: 0.75rem;
+                background-color: #fff;
+            }
+
+            .oe_product_image img {
+                display: block;
+                margin: 0 auto;
+                width: auto !important;
+                height: auto !important;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain !important;
+                object-position: center center !important;
+                position: static !important;
+                inset: auto !important;
+            }
+
+            /* Real shop card multi-image container */
+            .oe_product_image_link {
+                aspect-ratio: 1 / 1;
+                min-height: 180px;
+                display: flex !important;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                background-color: #fff;
+                padding: 0 !important;
+                scrollbar-width: none;
+            }
+
+            .oe_product_image_link::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Each image wrapper must occupy one full slide */
+            .oe_product_image_img_wrapper,
+            .oe_product_image_img_wrapper_secondary {
+                flex: 0 0 100%;
+                min-width: 100%;
+                width: 100%;
+                height: 100%;
+                scroll-snap-align: start;
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                padding: 0.75rem;
+                position: relative;
+                background-color: #fff;
+            }
+
+            /* Kill theme absolute positioning inside the grid only */
+            .oe_product_image_link .oe_product_image_img,
+            .oe_product_image_link .oe_product_image_img_secondary {
+                position: static !important;
+                inset: auto !important;
+                display: block;
+                margin: 0 auto;
+                width: auto !important;
+                height: auto !important;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain !important;
+                object-position: center center !important;
+            }
+        }
+    }
+}
+
+/* Mobile */
+@media (max-width: 575.98px) {
+    #products_grid {
+        #o_wsale_products_grid {
+            .oe_product {
+                .oe_product_image,
+                .oe_product_image_link,
+                .oe_product_image_img_wrapper,
+                .oe_product_image_img_wrapper_secondary {
+                    min-height: 220px;
+                }
+
+                .oe_product_image,
+                .oe_product_image_img_wrapper,
+                .oe_product_image_img_wrapper_secondary {
+                    padding: 0.875rem;
+                }
+            }
+        }
+    }
+}
+
+/* Tablet */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    #products_grid {
+        #o_wsale_products_grid {
+            .oe_product {
+                .oe_product_image,
+                .oe_product_image_link,
+                .oe_product_image_img_wrapper,
+                .oe_product_image_img_wrapper_secondary {
+                    min-height: 210px;
+                }
+            }
+        }
+    }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+    #products_grid {
+        #o_wsale_products_grid {
+            .oe_product {
+                .oe_product_image,
+                .oe_product_image_link,
+                .oe_product_image_img_wrapper,
+                .oe_product_image_img_wrapper_secondary {
+                    min-height: 240px;
+                }
+            }
+        }
+    }
+}
+/* =========================================================
+   PRODUCT DETAIL PAGE ONLY
+   Separate from the shop card carousel
+   ========================================================= */
+
+#product_detail {
+    #o-carousel-product {
+        .carousel-inner {
+            background-color: #fff;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .carousel-item img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+            object-position: center center;
+        }
+    }
+}
+
+/* Mobile product detail */
+@media (max-width: 575.98px) {
+    #product_detail {
+        #o-carousel-product {
+            .carousel-inner {
+                max-height: 60svh;
+            }
+
+            .carousel-item img {
+                max-height: 58svh;
+                padding: 0.25rem;
+            }
+        }
+    }
+}
+
+/* Tablet product detail */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    #product_detail {
+        #o-carousel-product {
+            .carousel-inner {
+                max-height: 70svh;
+            }
+
+            .carousel-item img {
+                max-height: 68svh;
+                padding: 0.5rem;
+            }
+        }
+    }
+}
+
+/* Desktop product detail */
+@media (min-width: 992px) {
+    #product_detail {
+        #o-carousel-product {
+            .carousel-item img {
+                max-height: 75svh;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+odoo.conf
+dev.conf
+*.log
+data/
+filestore/
+sessions/
+backups/
+*.dump
+*.sql
