@@ -1,4 +1,4 @@
-from odoo import _
+import re
 from odoo.http import request
 
 from odoo.addons.website_sale.controllers.main import WebsiteSale
@@ -28,21 +28,12 @@ class WebsiteSalePeruCheckoutLock(WebsiteSale):
         if not peru:
             return identification_type_model.browse()
 
-        domain = [("country_id", "=", peru.id)]
-
-        if "l10n_pe_vat_code" in identification_type_model._fields:
-            domain.append(("l10n_pe_vat_code", "in", list(self._ALLOWED_PE_VAT_CODES)))
-
-        identification_types = identification_type_model.search(domain, order="sequence, name, id")
-
-        # Fallback in case the field is not present or values differ in the database
-        if not identification_types:
-            identification_types = identification_type_model.search(
-                [("country_id", "=", peru.id)],
-                order="sequence, name, id",
-            )
-
-        return identification_types
+        # CE/passport are country-neutral localization records, unlike DNI/RUC.
+        domain = [
+            ("l10n_pe_vat_code", "in", self._ALLOWED_PE_VAT_CODES),
+            "|", ("country_id", "=", peru.id), ("country_id", "=", False),
+        ]
+        return identification_type_model.search(domain, order="sequence, name, id")
 
     def _prepare_address_form_values(self, *args, callback="", order_sudo=False, **kwargs):
         """Force the checkout form to use Peru-only country data."""
@@ -117,12 +108,30 @@ class WebsiteSalePeruCheckoutLock(WebsiteSale):
         selected_identification_type_id = address_values.get("l10n_latam_identification_type_id")
         if (
             selected_identification_type_id
-            and allowed_identification_type_ids
             and selected_identification_type_id not in allowed_identification_type_ids
         ):
             invalid_fields.add("l10n_latam_identification_type_id")
             error_messages.append(
-                _("The selected identification type is not allowed for Peru checkout.")
+                request.env._("The selected identification type is not allowed for Peru checkout.")
             )
+
+        if selected_identification_type_id in allowed_identification_type_ids and (
+            address_type == "billing" or use_delivery_as_billing
+        ):
+            identity = allowed_identification_types.browse(selected_identification_type_id)
+            document = (address_values.get("vat", partner_sudo.vat or "") or "").strip()
+            if not document:
+                missing_fields.add("vat")
+                error_messages.append(request.env._("Enter your identification number."))
+            elif identity.l10n_pe_vat_code == "1" and not re.fullmatch(r"[0-9]{8}", document):
+                invalid_fields.add("vat")
+                error_messages.append(request.env._("DNI must contain exactly 8 digits."))
+            elif identity.l10n_pe_vat_code == "6" and (
+                not re.fullmatch(r"[0-9]{11}", document)
+                or not request.env["res.partner"].check_vat_pe(document)
+            ):
+                if "vat" not in invalid_fields:
+                    error_messages.append(request.env._("Enter a valid 11-digit RUC."))
+                invalid_fields.add("vat")
 
         return invalid_fields, missing_fields, error_messages

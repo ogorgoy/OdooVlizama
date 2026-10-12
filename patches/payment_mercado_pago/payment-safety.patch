@@ -1,0 +1,206 @@
+--- a/models\payment_transaction.py
++++ b/models\payment_transaction.py
+@@ -86,11 +86,10 @@
+ 
+     @staticmethod
+     def _mercado_pago_redact_preference_payload_for_log(payload):
+-        """Return a deep copy of the preference payload safe for logs (emails masked)."""
++        """Keep diagnostic request structure without logging payer personal data."""
+         redacted = copy.deepcopy(payload)
+-        payer = redacted.get('payer')
+-        if isinstance(payer, dict) and payer.get('email'):
+-            payer['email'] = PaymentTransaction._mercado_pago_mask_email(payer['email'])
++        if 'payer' in redacted:
++            redacted['payer'] = '<REDACTED>'
+         return redacted
+ 
+     def _mercado_pago_get_payer_partner(self):
+@@ -104,11 +103,7 @@
+         return self.env['res.partner']
+ 
+     def _mercado_pago_get_identification_values(self, partner):
+-        """Map Odoo LATAM identification type to Mercado Pago identification.
+-
+-        Temporary diagnostic fallback:
+-        if the identification type or number is missing, send DNI 12345678.
+-        """
++        """Map genuine supported documents; let hosted checkout request missing data."""
+         self.ensure_one()
+ 
+         partner = partner.commercial_partner_id if partner else partner
+@@ -124,19 +119,16 @@
+             'RUC': 'RUC',
+             'CE': 'CE',
+         }
+-        mp_type = mp_type_map.get(type_name)
+-
+-        # Temporary diagnostic fallback
++        pe_code = getattr(identification_type, 'l10n_pe_vat_code', False) if identification_type else False
++        mp_type = {'1': 'DNI', '4': 'CE', '6': 'RUC'}.get(pe_code) if pe_code else mp_type_map.get(type_name)
++
+         if not mp_type or not document_number:
+             _logger.warning(
+                 "Mercado Pago: missing identification data for tx %s. "
+-                "Using fallback DNI 12345678 for diagnostics.",
++                "Omitting optional identification; no synthetic document will be sent.",
+                 self.reference,
+             )
+-            return {
+-                'type': 'DNI',
+-                'number': '12345678',
+-            }
++            return {}
+ 
+         return {
+             'type': mp_type,
+@@ -167,7 +159,7 @@
+             self.operation,
+             payer_partner.id if payer_partner else None,
+             self.sale_order_ids[:1].id if self.sale_order_ids else None,
+-            dict(payer, email=self._mercado_pago_mask_email(payer.get('email'))),
++            self._mercado_pago_redact_preference_payload_for_log(payload).get('payer'),
+         )
+         _logger.info(
+             "Mercado Pago: preference request payload (redacted) for tx %s:\n%s",
+@@ -239,35 +231,9 @@
+         Mercado Pago may treat a payer as effectively missing if it only contains empty/None values.
+         Avoid sending nested structures filled with nulls; only include meaningful values.
+ 
+-        Diagnostic: set System Parameter ``payment_mercado_pago.debug_static_payer`` to ``True``
+-        to send a fixed test payer and verify whether Mercado Pago reflects preference data in the
+-        payment object. Disable after testing (set to ``False`` or delete the key).
++        Payer values always belong to the order/customer, including in test mode.
+         """
+         self.ensure_one()
+-
+-        icp = self.env['ir.config_parameter'].sudo()
+-        if icp.get_param('payment_mercado_pago.debug_static_payer', 'False').lower() in (
+-            '1', 'true', 'yes',
+-        ):
+-            _logger.warning(
+-                "Mercado Pago: DEBUG static payer is ON (ir.config_parameter "
+-                "payment_mercado_pago.debug_static_payer). Using fixed test identity only for "
+-                "diagnostics — turn off after testing."
+-            )
+-            return {
+-                'first_name': 'Debug',
+-                'last_name': 'StaticPayer',
+-                'email': 'debug.mercadopago.static@example.com',
+-                'phone': {'number': '+51999999999'},
+-                'address': {
+-                    'zip_code': '15001',
+-                    'street_name': 'Av. Diagnostico 123',
+-                },
+-                'identification': {
+-                    'type': 'DNI',
+-                    'number': '12345678',
+-                },
+-            }
+ 
+         partner = self._mercado_pago_get_payer_partner()
+         partner = partner.commercial_partner_id if partner else partner
+@@ -280,7 +246,6 @@
+         phone = (
+             (self.partner_phone or '').strip()
+             or (partner.phone or '').strip()
+-            or (partner.mobile or '').strip()
+             or None
+         )
+         zip_code = (self.partner_zip or '').strip() or (partner.zip or '').strip() or None
+@@ -424,12 +389,18 @@
+             return super()._extract_amount_data(payment_data)
+ 
+         if self.operation in ('online_redirect', 'online_direct'):
+-            amount = payment_data.get('additional_info', {}).get('items', [{}])[0].get('unit_price')
++            items = (payment_data.get('additional_info') or {}).get('items') or [{}]
++            amount = items[0].get('unit_price')
+         else:  # 'online_token', 'offline'
+             amount = payment_data.get('transaction_amount')
+         currency_code = payment_data.get('currency_id')
++        try:
++            amount = float(amount)
++        except (TypeError, ValueError):
++            # Let the base validator reject missing/invalid amounts as payment errors.
++            amount = 0.0
+         return {
+-            'amount': float(amount),
++            'amount': amount,
+             'currency_code': currency_code,
+             'precision_digits': const.CURRENCY_DECIMALS.get(currency_code),
+         }
+--- a/controllers\payment.py
++++ b/controllers\payment.py
+@@ -70,15 +70,15 @@
+         :param dict data: The payment data.
+         """
+         _logger.info(
+-            "Mercado Pago: handling return with data:\n%s",
+-            pprint.pformat(data),
++            "Mercado Pago: handling return reference=%s payment_id=%s",
++            data.get('external_reference'), data.get('payment_id'),
+         )
+         if data.get('payment_id') not in ('null', None, ''):
+             self._verify_and_process(data)
+         else:  # The customer cancelled the payment by clicking on the return button.
+             _logger.info(
+-                "Mercado Pago: return without payment_id (cancelled or missing); query=%s",
+-                pprint.pformat(data),
++                "Mercado Pago: return without payment_id (cancelled or missing); reference=%s",
++                data.get('external_reference'),
+             )
+ 
+         # Redirect the user to the status page.
+@@ -98,11 +98,10 @@
+         """
+         data = request.get_json_data()
+         _logger.info(
+-            "Mercado Pago: webhook received reference=%s action=%s payment_id=%s payload:\n%s",
++            "Mercado Pago: webhook received reference=%s action=%s payment_id=%s",
+             reference,
+             data.get('action'),
+             data.get('data', {}).get('id'),
+-            pprint.pformat(data),
+         )
+ 
+         # Mercado Pago sends two types of asynchronous notifications: webhook notifications and
+@@ -128,8 +127,8 @@
+         )
+         if not tx_sudo:
+             _logger.warning(
+-                "Mercado Pago: no transaction found for data=%s",
+-                pprint.pformat(data),
++                "Mercado Pago: no transaction found for reference=%s",
++                data.get('external_reference'),
+             )
+             return
+         _logger.info(
+@@ -150,13 +149,15 @@
+                 data.get('payment_id'),
+             )
+         else:
+-            payer = verified_data.get('payer') if isinstance(verified_data.get('payer'), dict) else {}
+-            add_info = verified_data.get('additional_info') or {}
+-            add_payer = add_info.get('payer') if isinstance(add_info.get('payer'), dict) else {}
++            if verified_data.get('external_reference') != tx_sudo.reference:
++                _logger.warning(
++                    "Mercado Pago: verified reference mismatch for tx %s payment_id=%s; ignored",
++                    tx_sudo.reference, data.get('payment_id'),
++                )
++                return
+             _logger.info(
+                 "Mercado Pago: verified payment for tx %s (id=%s) mp_payment_id=%s status=%s "
+-                "status_detail=%s amount=%s currency=%s "
+-                "payer.email=%s payer.first_name=%s additional_info.payer.email=%s",
++                "status_detail=%s amount=%s currency=%s",
+                 tx_sudo.reference,
+                 tx_sudo.id,
+                 verified_data.get('id'),
+@@ -164,8 +165,5 @@
+                 verified_data.get('status_detail'),
+                 verified_data.get('transaction_amount'),
+                 verified_data.get('currency_id'),
+-                _mercado_pago_mask_email_for_log(payer.get('email')),
+-                payer.get('first_name'),
+-                _mercado_pago_mask_email_for_log(add_payer.get('email')),
+             )
+             tx_sudo._process('mercado_pago', verified_data)

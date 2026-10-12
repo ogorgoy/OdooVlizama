@@ -25,12 +25,9 @@
 
         <!-- Restrict identification types -->
         <xpath expr="//select[@name='l10n_latam_identification_type_id']" position="replace">
-            <t
-                t-set="selected_identification_type_id"
-                t-value="partner_sudo.l10n_latam_identification_type_id.id or current_partner.l10n_latam_identification_type_id.id"
-            />
             <select
-                id="o_l10n_latam_identification_type_id"
+                t-if="is_commercial_address and can_edit_vat"
+                id="l10n_latam_identification_type_id"
                 name="l10n_latam_identification_type_id"
                 class="form-select"
             >
@@ -39,7 +36,7 @@
                     t-foreach="pe_checkout_identification_types"
                     t-as="identification_type"
                     t-att-value="identification_type.id"
-                    t-att-selected="identification_type.id == selected_identification_type_id"
+                    t-att-selected="identification_type.id == current_partner.l10n_latam_identification_type_id.id"
                     t-out="identification_type.name"
                 />
             </select>

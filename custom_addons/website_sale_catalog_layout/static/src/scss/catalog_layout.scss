@@ -3,6 +3,8 @@
     .oe_product {
         .oe_product_cart {
             min-height: 160px;
+            /* Auto visibility collapses unmeasured list cards before first layout. */
+            content-visibility: visible;
         }
 
         .oe_product_image {

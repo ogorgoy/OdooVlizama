@@ -9,7 +9,6 @@
         "website_sale",
         "l10n_latam_base",
         "l10n_pe",
-        "l10n_pe_website_sale",
     ],
     "data": [
         "views/website_sale_templates.xml",

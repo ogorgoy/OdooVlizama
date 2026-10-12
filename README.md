@@ -11,7 +11,7 @@ This repository contains the custom modules only. Odoo, its Python runtime, Post
 | `website_mobile_drawer_menu` | Mobile drawer navigation with icons and mobile header styling, including scroll-state positioning. | `website`, `website_sale` |
 | `website_sale_product_image_fit` | Responsive catalog image fitting, desktop secondary-image presentation, and mobile image slides. | `website_sale` |
 | `website_sale_catalog_layout` | Compact catalog list cards, search controls, discount price styling, and percentage badges on catalog and product pages. Updates product badges when variants change. | `website_sale_product_image_fit` |
-| `website_sale_identification_type` | Forces checkout country to Peru and filters identification types, with server-side address validation. | `website_sale`, `l10n_latam_base`, `l10n_pe`, `l10n_pe_website_sale` |
+| `website_sale_identification_type` | Forces checkout country to Peru and validates DNI/RUC/CE identification. | `website_sale`, `l10n_latam_base`, `l10n_pe` |
 | `website_stock_auto_unpublish` | Scheduled removal of published products with zero or negative on-hand stock. | `website_sale`, `stock` |
 | `website_whatsapp_float` | Floating WhatsApp links on the homepage, shop, and product pages, with context-aware Spanish messages. | `website`, `website_sale` |
 

@@ -8,6 +8,18 @@
         <xpath expr="//head" position="inside">
        <style id="website_mobile_drawer_menu_styles">
     @media (max-width: 991.98px) {
+        /* Keep the mobile header flush through every scroll transition. */
+        #wrapwrap > header#top.o_header_standard.o_no_autohide_menu {
+            top: 0 !important;
+            transform: none !important;
+            background-color: #ffffff !important;
+        }
+
+        /* Odoo keeps the header static before its affix threshold. */
+        #wrapwrap > header#top.o_header_standard.o_no_autohide_menu:not(.o_header_affixed) {
+            position: sticky !important;
+        }
+
         #top_menu_collapse_mobile,
         #top_menu_collapse_mobile.offcanvas,
         #top_menu_collapse_mobile.o_navbar_mobile {

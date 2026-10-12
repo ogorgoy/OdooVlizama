@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Language: es_419\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. module: website_sale_identification_type
+#. odoo-python
+#: code:addons/website_sale_identification_type/controllers/checkout.py:0
+msgid "DNI must contain exactly 8 digits."
+msgstr "El DNI debe contener exactamente 8 dígitos."
+
+#. module: website_sale_identification_type
+#. odoo-python
+#: code:addons/website_sale_identification_type/controllers/checkout.py:0
+msgid "Enter a valid 11-digit RUC."
+msgstr "Ingresa un RUC válido de 11 dígitos."
+
+#. module: website_sale_identification_type
+#. odoo-python
+#: code:addons/website_sale_identification_type/controllers/checkout.py:0
+msgid "Enter your identification number."
+msgstr "Ingresa tu número de identificación."
+
+#. module: website_sale_identification_type
+#. odoo-python
+#: code:addons/website_sale_identification_type/controllers/checkout.py:0
+msgid "The selected identification type is not allowed for Peru checkout."
+msgstr "El tipo de identificación seleccionado no está permitido para compras en Perú."
